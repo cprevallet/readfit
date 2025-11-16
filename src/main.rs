@@ -4,10 +4,9 @@ use fitparser::profile::field_types::MesgNum;
 fn main() {
     println!("Parsing FIT files using Profile version: {:?}", fitparser::profile::VERSION);
     let mut fp = File::open("tests/alsoworking.fit").expect("file not found");
-    while let Ok(data) = fitparser::from_reader(&mut fp) {
+    if let Ok(data) = fitparser::from_reader(&mut fp) {
         // print the data in FIT file
         //println!("{:#?}", data);
-
         for item in &data {
             match item.kind() {
                 MesgNum::Record => {
