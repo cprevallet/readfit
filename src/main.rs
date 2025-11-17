@@ -52,20 +52,20 @@ fn main() {
                                 0 => {
                                      let semi : i64 = fld.value().try_into().expect("conversion failed");  //semicircles
                                      let degrees_lat = semi_to_degrees(semi);
-                                     println!("Name = {}, Number = {}, Value = {}, Units = {}",
-                                              fld.name(), fld.number(), degrees_lat, fld.units());
+                                     println!("Name = {}, Value = {}, Units = {}",
+                                              fld.name(), degrees_lat, fld.units());
                                 },
 
                                 1 => {
                                      let semi : i64 = fld.value().try_into().expect("conversion failed");  //semicircles
                                      let degrees_lng = semi_to_degrees(semi);
-                                     println!("Name = {}, Number = {}, Value = {}, Units = {}",
-                                              fld.name(), fld.number(), degrees_lng, fld.units());
+                                     println!("Name = {}, Value = {}, Units = {}",
+                                              fld.name(), degrees_lng, fld.units());
                                 },
 
                                 3|4|5|73|78|253 =>{
-                                       println!("Name = {}, Number = {}, Value = {}, Units = {}",
-                                             fld.name(), fld.number(), fld.value(), fld.units());
+                                       println!("Name = {}, Value = {}, Units = {}",
+                                             fld.name(), fld.value(), fld.units());
                                  },
 
                                 _ => print!("{}", "")  // matches other patterns 
