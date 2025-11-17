@@ -1,29 +1,5 @@
 use std::fs::File;
 use fitparser::profile::field_types::MesgNum;
-/*
-Basic stuff silicon sneaker brings in:
-
-		RecTimestamps[idx] = C.long(item.Timestamp.Unix())
-		RecDistances[idx] = C.float(item.GetDistanceScaled())
-		RecSpeeds[idx] = C.float(item.GetSpeedScaled())
-		RecAltitudes[idx] = C.float(item.GetAltitudeScaled())
-		RecCadences[idx] = C.float(item.Cadence)
-		RecHeartRates[idx] = C.float(item.HeartRate)
-		RecLats[idx] = C.float(item.PositionLat.Degrees())
-		RecLongs[idx] = C.float(item.PositionLong.Degrees())
-
-Other stuff silicon sneaker brings in:
-		LapTimestamps[idx] = C.long(item.Timestamp.Unix())
-		LapTotalDistances[idx] = C.float(item.GetTotalDistanceScaled())
-		LapStartPositionLats[idx] = C.float(item.StartPositionLat.Degrees())
-		LapStartPositionLongs[idx] = C.float(item.StartPositionLong.Degrees())
-		LapEndPositionLats[idx] = C.float(item.EndPositionLat.Degrees())
-		LapEndPositionLongs[idx] = C.float(item.EndPositionLong.Degrees())
-		LapTotalCaloriess[idx] = C.float(item.TotalCalories)
-		LapTotalElapsedTimes[idx] = C.float(item.GetTotalElapsedTimeScaled())
-		LapTotalTimerTimes[idx] = C.float(item.GetTotalTimerTimeScaled())
-		nLaps = nLaps + 1
-*/
 
 fn semi_to_degrees(semi : i64) -> f64 {
    let factor : f64 = 2i64.pow(31u32) as f64;
@@ -56,7 +32,7 @@ fn main() {
                                 },
 
                                 0_u8..=2_u8|5_u8..=28_u8|40_u8..=253_u8 =>{
-                                       println!("Name = {}, Value = {}, Units = {}",
+                                       println!("Name = {}, Value = {:#}, Units = {}",
                                              fld.name(), fld.value(), fld.units());
                                  },
 
@@ -82,7 +58,7 @@ fn main() {
                                 },
 
                                 3|4|5|73|78|253 =>{
-                                       println!("Name = {}, Value = {}, Units = {}",
+                                       println!("Name = {}, Value = {:#}, Units = {}",
                                              fld.name(), fld.value(), fld.units());
                                  },
 
@@ -107,7 +83,7 @@ fn main() {
                                 },
 
                                 7..25 =>{
-                                       println!("Name = {}, Value = {}, Units = {}",
+                                       println!("Name = {}, Value = {:#}, Units = {}",
                                              fld.name(), fld.value(), fld.units());
                                  },
 
