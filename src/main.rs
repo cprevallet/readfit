@@ -1,7 +1,5 @@
 use std::fs::File;
 use fitparser::profile::field_types::MesgNum;
-use fitparser::FitDataField;
-
 /*
 Basic stuff silicon sneaker brings in:
 
@@ -41,6 +39,7 @@ fn main() {
         // println!("{:#?}", data);
         for item in &data {
             match item.kind() {
+                // Individual records
                 MesgNum::Record => {
                     // print all the data records in FIT file
                     //println!("{:#?}", item.fields());
@@ -49,18 +48,11 @@ fn main() {
                     for fld in item.fields().iter() {
                             match fld.number() {
 
-                                0 => {
+                                0|1 => {
                                      let semi : i64 = fld.value().try_into().expect("conversion failed");  //semicircles
-                                     let degrees_lat = semi_to_degrees(semi);
+                                     let degrees = semi_to_degrees(semi);
                                      println!("Name = {}, Value = {}, Units = {}",
-                                              fld.name(), degrees_lat, fld.units());
-                                },
-
-                                1 => {
-                                     let semi : i64 = fld.value().try_into().expect("conversion failed");  //semicircles
-                                     let degrees_lng = semi_to_degrees(semi);
-                                     println!("Name = {}, Value = {}, Units = {}",
-                                              fld.name(), degrees_lng, fld.units());
+                                              fld.name(), degrees, fld.units());
                                 },
 
                                 3|4|5|73|78|253 =>{
@@ -72,6 +64,30 @@ fn main() {
                             }
                     }
                     },
+                    
+                // Lap records
+                MesgNum::Lap => {
+                    // Retrieve the FitDataField struct.
+                    for fld in item.fields().iter() {
+                            match fld.number() {
+
+                                3|4|5|6 => {
+                                     let semi : i64 = fld.value().try_into().expect("conversion failed");  //semicircles
+                                     let degrees = semi_to_degrees(semi);
+                                     println!("Name = {}, Value = {}, Units = {}",
+                                              fld.name(), degrees, fld.units());
+                                },
+
+                                7..25 =>{
+                                       println!("Name = {}, Value = {}, Units = {}",
+                                             fld.name(), fld.value(), fld.units());
+                                 },
+
+                                _ => print!("{}", "")  // matches other patterns 
+                            }
+                    }
+                },
+                
                 _ => print!("{}", "")  // matches other patterns 
                 }
         }
