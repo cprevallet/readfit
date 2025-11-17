@@ -35,19 +35,21 @@ fn semi_to_degrees(semi : i64) -> f64 {
 
 fn main() {
     println!("Parsing FIT files using Profile version: {:?}", fitparser::profile::VERSION);
-    let mut fp = File::open("tests/alsoworking.fit").expect("file not found");
+    let mut fp = File::open("tests/test.fit").expect("file not found");
     if let Ok(data) = fitparser::from_reader(&mut fp) {
         // print the data in FIT file
         //println!("{:#?}", data);
         for item in &data {
             match item.kind() {
                 MesgNum::Record => {
-//                     println!("{:#?}", item.fields());
+//                    println!("{:#?}", item.fields());
                 
                     println!();
 
-                    if item.fields().get(12).is_some() {
-                         let time_stamp: &FitDataField = item.fields().get(12).unwrap();
+// TODO - Need to figure out how to  iterate through all the numbered indexes properly.
+// TODO - The indexs on .get don't always match - esp for the timestamp.
+                    if item.fields().get(11).is_some() {
+                         let time_stamp: &FitDataField = item.fields().get(11).unwrap();
                          println!("Name = {}, Number = {}, Value = {}, Units = {}",
                              time_stamp.name(), time_stamp.number(), time_stamp.value(), time_stamp.units());
                       };
