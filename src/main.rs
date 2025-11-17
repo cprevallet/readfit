@@ -35,76 +35,46 @@ fn semi_to_degrees(semi : i64) -> f64 {
 
 fn main() {
     println!("Parsing FIT files using Profile version: {:?}", fitparser::profile::VERSION);
-    let mut fp = File::open("tests/test.fit").expect("file not found");
+    let mut fp = File::open("tests/alsoworking.fit").expect("file not found");
     if let Ok(data) = fitparser::from_reader(&mut fp) {
-        // print the data in FIT file
-        //println!("{:#?}", data);
+        // print all the data in FIT file
+        // println!("{:#?}", data);
         for item in &data {
             match item.kind() {
                 MesgNum::Record => {
-//                    println!("{:#?}", item.fields());
-                
-                    println!();
+                    // print all the data records in FIT file
+                    //println!("{:#?}", item.fields());
 
-// TODO - Need to figure out how to  iterate through all the numbered indexes properly.
-// TODO - The indexs on .get don't always match - esp for the timestamp.
-                    if item.fields().get(11).is_some() {
-                         let time_stamp: &FitDataField = item.fields().get(11).unwrap();
-                         println!("Name = {}, Number = {}, Value = {}, Units = {}",
-                             time_stamp.name(), time_stamp.number(), time_stamp.value(), time_stamp.units());
-                      };
-                     
-                    if item.fields().get(0).is_some() {
-                         let pos_lat: &FitDataField = item.fields().get(0).unwrap();
-                         let semi : i64 = pos_lat.value().try_into().expect("conversion failed");  //semicircles
-                         let degrees_lat = semi_to_degrees(semi);
-                         println!("Name = {}, Number = {}, Value = {}, Units = {}",
-                             pos_lat.name(), pos_lat.number(), degrees_lat, pos_lat.units());
-                      };
+                    // Retrieve the FitDataField struct.
+                    for fld in item.fields().iter() {
+                            match fld.number() {
 
-                    if item.fields().get(1).is_some() {
-                         let pos_lon: &FitDataField = item.fields().get(1).unwrap();
-                         let semi : i64 = pos_lon.value().try_into().expect("conversion failed");  //semicircles
-                         let degrees_lon = semi_to_degrees(semi);
-                         println!("Name = {}, Number = {}, Value = {}, Units = {}",
-                             pos_lon.name(), pos_lon.number(), degrees_lon, pos_lon.units());
-                      };
+                                0 => {
+                                     let semi : i64 = fld.value().try_into().expect("conversion failed");  //semicircles
+                                     let degrees_lat = semi_to_degrees(semi);
+                                     println!("Name = {}, Number = {}, Value = {}, Units = {}",
+                                              fld.name(), fld.number(), degrees_lat, fld.units());
+                                },
 
-                    if item.fields().get(2).is_some() {
-                         let heart_rate: &FitDataField = item.fields().get(2).unwrap();
-                         println!("Name = {}, Number = {}, Value = {}, Units = {}",
-                             heart_rate.name(), heart_rate.number(), heart_rate.value(), heart_rate.units());
-                      };
+                                1 => {
+                                     let semi : i64 = fld.value().try_into().expect("conversion failed");  //semicircles
+                                     let degrees_lng = semi_to_degrees(semi);
+                                     println!("Name = {}, Number = {}, Value = {}, Units = {}",
+                                              fld.name(), fld.number(), degrees_lng, fld.units());
+                                },
 
-                    if item.fields().get(3).is_some() {
-                         let cadence: &FitDataField = item.fields().get(3).unwrap();
-                         println!("Name = {}, Number = {}, Value = {}, Units = {}",
-                             cadence.name(), cadence.number(), cadence.value(), cadence.units());
-                      };
+                                3|4|5|73|78|253 =>{
+                                       println!("Name = {}, Number = {}, Value = {}, Units = {}",
+                                             fld.name(), fld.number(), fld.value(), fld.units());
+                                 },
 
-                    if item.fields().get(4).is_some() {
-                         let distance: &FitDataField = item.fields().get(4).unwrap();
-                         println!("Name = {}, Number = {}, Value = {}, Units = {}",
-                             distance.name(), distance.number(), distance.value(), distance.units());
-                      };
-
-                    if item.fields().get(7).is_some() {
-                         let speed: &FitDataField = item.fields().get(7).unwrap();
-                         println!("Name = {}, Number = {}, Value = {}, Units = {}",
-                             speed.name(), speed.number(), speed.value(), speed.units());
-                      };
-
-                    if item.fields().get(8).is_some() {
-                         let cadence: &FitDataField = item.fields().get(8).unwrap();
-                         println!("Name = {}, Number = {}, Value = {}, Units = {}",
-                             cadence.name(), cadence.number(), cadence.value(), cadence.units());
-                      };
-
-
-                     
-                },
-                _ => print!("{}", "") 
-            }
+                                _ => print!("{}", "")  // matches other patterns 
+                            }
+                    }
+                    },
+                _ => print!("{}", "")  // matches other patterns 
+                }
         }
     }
-}    
+}                                            
+
