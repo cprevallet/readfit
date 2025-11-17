@@ -51,8 +51,8 @@ fn main() {
                                 3_u8..=4_u8 | 29_u8..=39_u8 => {
                                      let semi : i64 = fld.value().try_into().expect("conversion failed");  //semicircles
                                      let degrees = semi_to_degrees(semi);
-                                     println!("Name = {}, Value = {}, Units = {}",
-                                              fld.name(), degrees, fld.units());
+                                     println!("Name = {}, Value = {:.3}°, Units = {}",
+                                              fld.name(), degrees, "degrees");
                                 },
 
                                 0_u8..=2_u8|5_u8..=28_u8|40_u8..=253_u8 =>{
@@ -77,8 +77,8 @@ fn main() {
                                 0|1 => {
                                      let semi : i64 = fld.value().try_into().expect("conversion failed");  //semicircles
                                      let degrees = semi_to_degrees(semi);
-                                     println!("Name = {}, Value = {}, Units = {}",
-                                              fld.name(), degrees, fld.units());
+                                     println!("Name = {}, Value = {:.3}°, Units = {}",
+                                              fld.name(), degrees, "degrees");
                                 },
 
                                 3|4|5|73|78|253 =>{
@@ -89,6 +89,7 @@ fn main() {
                                 _ => print!("{}", "")  // matches other patterns 
                             }
                     }
+                    println!("");
                     },
                     
                 // Lap records
@@ -101,8 +102,8 @@ fn main() {
                                 3|4|5|6 => {
                                      let semi : i64 = fld.value().try_into().expect("conversion failed");  //semicircles
                                      let degrees = semi_to_degrees(semi);
-                                     println!("Name = {}, Value = {}, Units = {}",
-                                              fld.name(), degrees, fld.units());
+                                     println!("Name = {}, Value = {:.3}°, Units = {}",
+                                              fld.name(), degrees, "degrees");
                                 },
 
                                 7..25 =>{
