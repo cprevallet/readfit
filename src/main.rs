@@ -39,6 +39,32 @@ fn main() {
         // println!("{:#?}", data);
         for item in &data {
             match item.kind() {
+                MesgNum::Session => {
+                    // print all the data records in FIT file
+                    // println!("{:#?}", item.fields());
+
+                    println!("################ Session ###############");
+                    // Retrieve the FitDataField struct.
+                    for fld in item.fields().iter() {
+                            match fld.number() {
+
+                                3_u8..=4_u8 | 29_u8..=39_u8 => {
+                                     let semi : i64 = fld.value().try_into().expect("conversion failed");  //semicircles
+                                     let degrees = semi_to_degrees(semi);
+                                     println!("Name = {}, Value = {}, Units = {}",
+                                              fld.name(), degrees, fld.units());
+                                },
+
+                                0_u8..=2_u8|5_u8..=28_u8|40_u8..=253_u8 =>{
+                                       println!("Name = {}, Value = {}, Units = {}",
+                                             fld.name(), fld.value(), fld.units());
+                                 },
+
+                                _ => print!("{}", "")  // matches other patterns 
+                            }
+                    }
+                    println!("############ End Session ###############");
+                },
                 // Individual records
                 MesgNum::Record => {
                     // print all the data records in FIT file
@@ -67,6 +93,7 @@ fn main() {
                     
                 // Lap records
                 MesgNum::Lap => {
+                    println!("################ Lap ###################");
                     // Retrieve the FitDataField struct.
                     for fld in item.fields().iter() {
                             match fld.number() {
@@ -86,6 +113,7 @@ fn main() {
                                 _ => print!("{}", "")  // matches other patterns 
                             }
                     }
+                    println!("############ End Lap ###################");
                 },
                 
                 _ => print!("{}", "")  // matches other patterns 
