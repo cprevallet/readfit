@@ -60,6 +60,10 @@ fn main() {
                                 3|4|5|73|78|253 =>{
                                        println!("Name = {}, Value = {:#}, Units = {}",
                                              fld.name(), fld.value(), fld.units());
+                                       // if fld.name() == "distance" {
+                                       //     let y : f64 = fld.clone().into_value().try_into().unwrap();
+                                       //     println!("value as float = {}", 1.0 * y);
+                                       //      }
                                  },
 
                                 _ => print!("{}", "")  // matches other patterns 
